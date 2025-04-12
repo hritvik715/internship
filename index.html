@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title> Hindi Typing </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .practice-word {
+            font-size: 24px;
+            background-color: #e8f0fe;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .user-input {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .keyboard {
+            margin-top: 20px;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Hindi Typing Practice</h1>
+
+        <div class="practice-word" id="practiceWord"></div>
+        <input type="text" class="user-input" id="userInput" placeholder="Type the Hindi word here...">
+        <div class="feedback" id="feedback"></div>
+
+        <div>
+            <button class="btn" id="checkBtn">Check</button>
+            <button class="btn" id="nextBtn">Next Word</button>
+        </div>
+
+        <div class="keyboard">
+            <p>Keyboard help for Ka-Naada layout:</p>
+            <p>a = अ, s = स, d = द, f = ड, g = ग, h = ह, j = ज, k = क, l = ल</p>
+            <p>z = ष, x = ख, c = च, v = व, b = ब, n = न, m = म</p>
+            <p>i = इ, u = उ, p = प, y = य, r = र, o = ओ, t = श्र</p>
+        </div>
+    </div>
+
+    <script>
+
+        const words = ["नमस्ते", "भारत", "हिंदी", "प्यार", "आम", "पानी", "स्कूल"];
+
+
+        const keyMap = {
+            'a': 'अ', 'A': 'आ',
+            'i': 'इ', 'I': 'ई',
+            'u': 'उ', 'U': 'ऊ',
+            'e': 'ए', 'E': 'ऐ',
+            'o': 'ओ', 'O': 'औ',
+            'k': 'क', 'K': 'ख',
+            'g': 'ग', 'G': 'घ',
+            'c': 'च', 'C': 'छ',
+            'j': 'ज', 'J': 'झ',
+            't': 'ट', 'T': 'ठ',
+            'd': 'ड', 'D': 'ढ',
+            'w': 'त', 'W': 'थ',
+            'x': 'द', 'X': 'ध',
+            'n': 'न',
+            'p': 'प', 'P': 'फ',
+            'b': 'ब', 'B': 'भ',
+            'm': 'म',
+            'y': 'य',
+            'r': 'र',
+            'l': 'ल',
+            'v': 'व',
+            'S': 'श',
+            'z': 'ष',
+            's': 'स',
+            'h': 'ह',
+            'q': 'ा', 'Q': 'ॉ',
+            'f': 'ि', 'F': 'ी',
+            '`': '्'
+        };
+
+
+        const practiceWord = document.getElementById('practiceWord');
+        const userInput = document.getElementById('userInput');
+        const feedback = document.getElementById('feedback');
+        const checkBtn = document.getElementById('checkBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        let currentIndex = 0;
+
+
+        setWord(currentIndex);
+
+
+        function setWord(index) {
+            practiceWord.textContent = words[index];
+            userInput.value = '';
+            feedback.textContent = '';
+            feedback.className = 'feedback';
+            userInput.focus();
+        }
+
+
+        function checkWord() {
+            const inputText = userInput.value.trim();
+            const targetWord = words[currentIndex];
+
+            if (inputText === targetWord) {
+                feedback.textContent = "Correct!";
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = "Try again";
+                feedback.className = 'feedback incorrect';
+            }
+        }
+
+
+        function nextWord() {
+            currentIndex = (currentIndex + 1) % words.length;
+            setWord(currentIndex);
+        }
+
+
+        checkBtn.addEventListener('click', checkWord);
+        nextBtn.addEventListener('click', nextWord);
+
+
+        userInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                checkWord();
+            }
+        });
+
+
+        userInput.addEventListener('keydown', function (e) {
+            if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                const key = e.shiftKey ? e.key.toUpperCase() : e.key.toLowerCase();
+                const hindiChar = keyMap[key];
+
+                if (hindiChar) {
+                    e.preventDefault();
+                    userInput.value += hindiChar;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
